@@ -3,41 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-
+    android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/sub_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:height="?actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        />
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <FrameLayout android:id="@+id/noti_layout"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <com.example.sunchan.goodsaying.PhotoBackgroundView android:id="@+id/saying_background"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:importantForAccessibility="no" />
+        <ScrollView android:id="@+id/saying_scroll"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:fillViewport="true">
+            <TextView android:id="@+id/noti_text_view"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:padding="24dp" />
+        </ScrollView>
+    </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/noti_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bgimage"
-        >
-
-        <TextView
-            android:id="@+id/noti_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="45sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:padding="30dp"
-            android:scrollbars="vertical"
-            android:textColor="#000066"
-            />
-
-    </LinearLayout>
-
+    <CheckBox android:id="@+id/notification_enabled"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="48dp" android:saveEnabled="false"
+        android:text="@string/notification_enabled" />
 
 </LinearLayout>

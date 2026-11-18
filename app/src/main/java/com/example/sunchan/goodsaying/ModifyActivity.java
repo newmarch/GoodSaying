@@ -19,29 +19,30 @@ public class ModifyActivity extends AppCompatActivity {
 
     private int mId;
     private String mText = "";
-    private int mCount;
 
     private String mUserInput = "";
 
     private AlertDialog mDialog = null;
 
-    DBHandler db = new DBHandler(this);
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DBHandler(this);
         setContentView(R.layout.modify_layout);
+        ScreenInsets.apply(this);
 
         setupViews();
 
         Intent intent = getIntent();
 
-        mId = intent.getIntExtra("id", -1);
-        mText = intent.getStringExtra("text");
-        mCount = intent.getIntExtra("count", -1);
-
-        //Toast.makeText(this, Integer.toString(mId), Toast.LENGTH_SHORT).show();
-
+        mId = intent.getIntExtra(NotiActivity.EXTRA_ID, -1);
+        mText = db.readText(mId);
+        if (mText == null) {
+            finish();
+            return;
+        }
         mEditText.setText(mText);
     }
 
@@ -79,7 +80,7 @@ public class ModifyActivity extends AppCompatActivity {
             return;
         }
 
-        db.updateItem(mId, mUserInput, mCount);
+        db.updateItem(mId, mUserInput);
 
         Toast.makeText(ModifyActivity.this, com.example.sunchan.goodsaying.R.string.txt_update_done, Toast.LENGTH_SHORT).show();
         finish();           // Activity 종료
@@ -124,4 +125,9 @@ public class ModifyActivity extends AppCompatActivity {
             dialog.dismiss();
     }
 
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
+    }
 }

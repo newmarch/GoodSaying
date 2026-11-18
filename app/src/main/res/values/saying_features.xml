@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="adjust_background">Adjust photo</string>
+    <string name="photo_crop_hint">Drag to move. Pinch to zoom.</string>
+    <string name="photo_overlay_value">White overlay: %1$d%%</string>
+    <string name="apply_photo">Apply</string>
+    <string name="reminder_status_enabled">Included in daily reminders</string>
+    <string name="reminder_status_disabled">Excluded from daily reminders</string>
+    <string name="action_appearance">Appearance</string>
+    <string name="appearance_preview">Live preview</string>
+    <string name="appearance_font">Font</string>
+    <string name="appearance_size_value">Text size: %1$d sp</string>
+    <string name="appearance_color">Background color</string>
+    <string name="pick_background">Choose photo</string>
+    <string name="remove_background">Use color instead</string>
+    <string name="appearance_image_error">Could not load or save the background.</string>
+    <string name="reorder_saying">Reorder saying</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+    <string name="notification_enabled">Include in daily reminders</string>
+    <string name="previous_saying">Previous</string>
+    <string name="next_saying">Next</string>
+    <string name="edit_saying">Edit</string>
+    <string-array name="saying_fonts">
+        <item>Nanum Pen</item>
+        <item>System sans serif</item>
+        <item>System serif</item>
+    </string-array>
+    <string-array name="saying_colors">
+        <item>White</item>
+        <item>Cream</item>
+        <item>Mint</item>
+        <item>Blue</item>
+        <item>Night</item>
+    </string-array>
+</resources>

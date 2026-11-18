@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/sub_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="16dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/appearance_preview" />
+            <FrameLayout android:id="@+id/appearance_preview"
+                android:layout_width="match_parent" android:layout_height="180dp">
+                <com.example.sunchan.goodsaying.PhotoBackgroundView android:id="@+id/preview_image"
+                    android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:importantForAccessibility="no" />
+                <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:fillViewport="true">
+                    <TextView android:id="@+id/preview_text"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center" android:padding="16dp" android:text="@string/default_1" />
+                </ScrollView>
+            </FrameLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:labelFor="@+id/appearance_font" android:text="@string/appearance_font" />
+            <Spinner android:id="@id/appearance_font"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:minHeight="48dp" />
+            <TextView android:id="@+id/appearance_size_label"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:labelFor="@+id/appearance_size" />
+            <SeekBar android:id="@id/appearance_size"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:minHeight="48dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:labelFor="@+id/appearance_color" android:text="@string/appearance_color" />
+            <Spinner android:id="@id/appearance_color"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:minHeight="48dp" />
+            <Button android:id="@+id/pick_background"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/pick_background" />
+            <Button android:id="@+id/remove_background"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/remove_background" />
+            <Button android:id="@+id/adjust_background"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/adjust_background" />
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/cancel_appearance"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/txt_cancel" />
+        <Button android:id="@+id/save_appearance"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/btn_save" />
+    </LinearLayout>
+</LinearLayout>

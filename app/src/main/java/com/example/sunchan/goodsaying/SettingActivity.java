@@ -1,10 +1,10 @@
 package com.example.sunchan.goodsaying;
 
-import android.app.AlarmManager;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,22 +35,21 @@ public class SettingActivity extends AppCompatActivity {
     private String mEnabledColor = "#4169E1";
     private String mDisabledColor = "#A8A8A8";
 
-    DBHandler db = new DBHandler(this);
+    private DBHandler db;
 
-    private AlarmManager mAlarmMgr;
 
     private ArrayList<AlarmItem> arItem = new ArrayList<AlarmItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DBHandler(this);
         setContentView(com.example.sunchan.goodsaying.R.layout.alarm_layout);
+        ScreenInsets.apply(this);
 
         setupViews();
 
 
-        // for Alarm
-        mAlarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
 
 
         arItem = db.getAllAlarmItem();
@@ -187,6 +186,11 @@ public class SettingActivity extends AppCompatActivity {
             iMin = minute;
 
             setAlarm();
+            if (Build.VERSION.SDK_INT >= 33
+                    && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 2);
+            }
 
             String time = String.format("%02d", iHour) + ":" +
                           String.format("%02d", iMin) + " " +
@@ -201,61 +205,18 @@ public class SettingActivity extends AppCompatActivity {
 
 
     public void setAlarm() {
-        long triggerTime = 0;
-        long intervalTime = 24 * 60 * 60 * 1000;    // 24시간
-
-        // 우선 알람 해제  ... 먼저 설정되엇던 것이 잇을 지도 모르니...
-        cancelAlarm();
-
-        // Alarm 등록
-        Intent intent = new Intent(this, AlarmReceive.class);   //AlarmReceive.class이클레스는 따로 만들꺼임 알람이 발동될때 동작하는 클레이스임
-        //PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        // FLAG_UPDATE_CURRENT : 이미 생성된 PendingIntent 가 존재하면 해당 Intent 의 내용을 변경한다
-        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        triggerTime = setTriggerTime();
-
-        //알람 예약
-        //mAlarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);          // 한번 알람
-        mAlarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, triggerTime, intervalTime, pIntent);
-
-        //Toast.makeText(this, "Alarm setting", Toast.LENGTH_SHORT).show();
-
-        db.insertAlarmItem(new AlarmItem(1, iHour, iMin));
-
+        db.saveAlarm(iHour, iMin);
+        AlarmReceive.schedule(this, iHour, iMin);
     }
 
-    private void cancelAlarm()
-    {
-        Intent intent = new Intent(this, AlarmReceive.class);
-        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mAlarmMgr.cancel(pIntent);
-
+    private void cancelAlarm() {
         db.deleteAlarmItem();
-
+        AlarmReceive.cancel(this);
     }
 
-
-    private long setTriggerTime()
-    {
-        // current Time
-        long atime = System.currentTimeMillis();
-
-        // timepicker
-        Calendar curTime = Calendar.getInstance();
-        curTime.set(Calendar.HOUR_OF_DAY, iHour);
-        curTime.set(Calendar.MINUTE, iMin);
-        curTime.set(Calendar.SECOND, 0);
-        curTime.set(Calendar.MILLISECOND, 0);
-
-        long btime = curTime.getTimeInMillis();
-        long triggerTime = btime;
-        if (atime > btime)
-            triggerTime += 1000 * 60 * 60 * 24;
-
-        return triggerTime;
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
     }
-
-
 }

@@ -1,64 +1,65 @@
 package com.example.sunchan.goodsaying;
 
-// 어댑터 클래스
-
+import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+final class CustomList extends BaseAdapter {
+    interface MoveItem {
+        void move(int id, int target);
+    }
 
-public class CustomList extends BaseAdapter {
-    private ArrayList<Item> arrayItem;
-    private Context context;
+    private final Context context;
+    private final MoveItem moveItem;
+    private List<Item> items = Collections.emptyList();
 
-    public CustomList(Context context, int resource, ArrayList<Item> objects) {
-        //super(context, resource, objects);
-        this.arrayItem = objects;
+    CustomList(Context context, MoveItem moveItem) {
         this.context = context;
+        this.moveItem = moveItem;
     }
 
-    public int getCount() {
-        return arrayItem.size();
+    void setItems(List<Item> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
-    public Object getItem(int position) {
-        return arrayItem.get(position).getId();
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
+    @Override public int getCount() { return items.size(); }
+    @Override public Item getItem(int position) { return items.get(position); }
+    @Override public long getItemId(int position) { return getItem(position).getId(); }
+    @Override public boolean hasStableIds() { return true; }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
-        View v = convertView;
-
-        if (v == null) {
-            LayoutInflater li = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = li.inflate(com.example.sunchan.goodsaying.R.layout.list_layout, null);
+    public View getView(int position, View row, ViewGroup parent) {
+        if (row == null) {
+            row = LayoutInflater.from(context).inflate(R.layout.list_layout, parent, false);
         }
-
-        final Item item = arrayItem.get(pos);
-
-        if (item != null) {
-            TextView txt = (TextView) v.findViewById(com.example.sunchan.goodsaying.R.id.text_view);
-            txt.setText(arrayItem.get(pos).getText());
-        }
-
-        return v;
-
-    }
-
-    // Adapter가 관리하는 Data List를 교체 한다.
-    // 교체 후 Adapter.notifyDataSetChanged() 메서드로 변경 사실을
-    // Adapter에 알려 주어 ListView에 적용 되도록 한다.
-    public void setArrayList(ArrayList<Item> objects){
-        this.arrayItem = objects;
+        Item item = getItem(position);
+        TextView text = row.findViewById(R.id.text_view);
+        text.setText(item.getText());
+        ImageView notificationStatus = row.findViewById(R.id.notification_status);
+        boolean enabled = item.isNotificationEnabled();
+        notificationStatus.setImageResource(R.drawable.ic_reminder_on);
+        notificationStatus.setVisibility(enabled ? View.VISIBLE : View.INVISIBLE);
+        notificationStatus.setContentDescription(enabled
+                ? context.getString(R.string.reminder_status_enabled) : null);
+        View handle = row.findViewById(R.id.drag_handle);
+        final View dragRow = row;
+        handle.setOnLongClickListener(view -> view.startDrag(
+                ClipData.newPlainText("", ""), new View.DragShadowBuilder(dragRow), item, 0));
+        handle.setOnClickListener(view -> new AlertDialog.Builder(context)
+                .setTitle(R.string.reorder_saying)
+                .setItems(new CharSequence[]{context.getText(R.string.move_up), context.getText(R.string.move_down)}, (dialog, choice) ->
+                        moveItem.move(item.getId(), position + (choice == 0 ? -1 : 1)))
+                .show());
+        return row;
     }
 }

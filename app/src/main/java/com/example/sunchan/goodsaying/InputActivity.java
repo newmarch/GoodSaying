@@ -16,16 +16,17 @@ public class InputActivity extends AppCompatActivity {
     private Toolbar mToolBar;
 
     private String mUserInput = "";
-    private int mCount;
 
     private InputMethodManager imm;
 
-    DBHandler db = new DBHandler(this);
+    private DBHandler db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DBHandler(this);
         setContentView(com.example.sunchan.goodsaying.R.layout.input_layout);
+        ScreenInsets.apply(this);
 
         setupViews();
 
@@ -33,7 +34,6 @@ public class InputActivity extends AppCompatActivity {
 
         //키보드 보이게 하는 부분
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
 
     }
@@ -71,30 +71,18 @@ public class InputActivity extends AppCompatActivity {
             return;
         }
 
-        mCount = db.getMaxCount();
-
-        //Log.d(TAG, "MAX COUNT : " + String.valueOf(mCount));
-
-        if (mCount > 1) {
-            mCount -= 1;
-        } else {
-            mCount = 1;
+        try {
+            db.insertItem(mUserInput);
+            Toast.makeText(this, R.string.insert_ok, Toast.LENGTH_SHORT).show();
+            finish();
+        } catch (android.database.SQLException error) {
+            Toast.makeText(this, R.string.insert_fail, Toast.LENGTH_SHORT).show();
         }
-
-        // insert to DB
-        if (db.insertItem(new Item(mUserInput, mCount)) > 0) {
-            Toast.makeText(this, com.example.sunchan.goodsaying.R.string.insert_ok, Toast.LENGTH_SHORT).show();
-            finish();       // 저장 후 엑티비티 종료
-        } else {
-            Toast.makeText(this, com.example.sunchan.goodsaying.R.string.insert_fail, Toast.LENGTH_SHORT).show();
-        }
-
-        return;
     }
 
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
+    }
 }
-
-
-
-
-

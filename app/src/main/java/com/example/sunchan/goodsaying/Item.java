@@ -1,39 +1,14 @@
 package com.example.sunchan.goodsaying;
 
 public class Item {
-    private int iId;
-    private String sText;
-    private int iCount;
+    private int id;
+    private String text;
+    private boolean notificationEnabled;
 
-    public Item(){}
-
-    public Item(String sText, int iCount) {
-        super();
-        this.sText = sText;
-        this.iCount = iCount;
-    }
-
-    public int getId() {
-        return iId;
-    }
-
-    public void setId(int iId) {
-        this.iId = iId;
-    }
-
-    public String getText() {
-        return sText;
-    }
-
-    public void setText(String sText) {
-        this.sText = sText;
-    }
-
-    public int getCount() {
-        return iCount;
-    }
-
-    public void setCount(int iCount) {
-        this.iCount = iCount;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getText() { return text; }
+    public void setText(String text) { this.text = text; }
+    public boolean isNotificationEnabled() { return notificationEnabled; }
+    public void setNotificationEnabled(boolean enabled) { notificationEnabled = enabled; }
 }

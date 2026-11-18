@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="adjust_background">사진 조정</string>
+    <string name="photo_crop_hint">드래그하여 이동하고 두 손가락으로 확대하거나 축소하세요.</string>
+    <string name="photo_overlay_value">흰색 오버레이: %1$d%%</string>
+    <string name="apply_photo">적용</string>
+    <string name="reminder_status_enabled">매일 알림에 포함됨</string>
+    <string name="reminder_status_disabled">매일 알림에서 제외됨</string>
+    <string name="action_appearance">화면 꾸미기</string>
+    <string name="appearance_preview">미리보기</string>
+    <string name="appearance_font">글꼴</string>
+    <string name="appearance_size_value">글자 크기: %1$d sp</string>
+    <string name="appearance_color">배경색</string>
+    <string name="pick_background">사진 선택</string>
+    <string name="remove_background">배경색 사용</string>
+    <string name="appearance_image_error">배경을 불러오거나 저장하지 못했습니다.</string>
+    <string name="reorder_saying">글 순서 변경</string>
+    <string name="move_up">위로 이동</string>
+    <string name="move_down">아래로 이동</string>
+    <string name="notification_enabled">매일 알림에 포함</string>
+    <string name="previous_saying">이전</string>
+    <string name="next_saying">다음</string>
+    <string name="edit_saying">수정</string>
+    <string-array name="saying_fonts">
+        <item>나눔손글씨 펜</item>
+        <item>시스템 고딕</item>
+        <item>시스템 명조</item>
+    </string-array>
+    <string-array name="saying_colors">
+        <item>흰색</item>
+        <item>크림색</item>
+        <item>민트색</item>
+        <item>파란색</item>
+        <item>어두운색</item>
+    </string-array>
+</resources>
